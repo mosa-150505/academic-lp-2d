@@ -10,4 +10,18 @@ The algo proceeds in 3 deterministc steps :
 2. **Feasibility Filtering**: Retains only intersection points that satisfy all inequality constraints and non-negativity conditions (`I_k ∈ R`).
 3. **Optimization**: Evaluates the objective function `z = c₁x + c₂y` on the feasible vertices and selects the vertex (or segment) that maximizes/minimizes `z`.
 
-## 
+## Build & Run
+# Clone 
+```
+git clone git@github.com:mosa-150505/academic-lp-2d.git
+```
+or 
+```
+git clone https://github.com/mosa-150505/academic-lp-2d.git
+```
+
+# Compile
+`make`
+
+# Run
+`make run`
