@@ -169,7 +169,7 @@ Solution solve_linear_program (const LinearProgram *lp) {
     }
 
     //  Collecte des points atteignant l'optimum
-    for (int i = 01; i < num_intersections; i++) {
+    for (int i = 0; i < num_intersections; i++) {
         if (is_feasible(lp, intersections[i].x, intersections[i].y)) {
             double z_val = calculate_z(lp->c1, lp->c2, intersections[i].x, intersections[i].y);
 
@@ -218,3 +218,6 @@ Solution solve_linear_program (const LinearProgram *lp) {
             solution.p2 = optimal_points[0];
         }
     }
+
+    if (solution.found && !solution.is_segment) {
+
