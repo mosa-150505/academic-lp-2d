@@ -23,7 +23,7 @@ typedef struct {
 } Line;
 
 typedef struct {
-    double a, b;
+    double x, y;
 } Point;
 
 typedef struct {
@@ -43,11 +43,11 @@ typedef struct {
 } Solution;
 
 //  Functions
-static bool is_constraint_satisfied (const Constraint* c, double x, double y) {
+static bool is_constraint_satisfied (const Constraint *c, double x, double y) {
     return (c->a * x + c->b * y) <= (c->d + EPSILON); //  EPSILON sert à la tolérance des valeurs, car les double sont souvent imprécis
 }
 
-static bool is_feasible (const LinearProgram* lp, double x, double y) {
+static bool is_feasible (const LinearProgram *lp, double x, double y) {
     int i;
 
     for (i = 0; i < lp->num_constraints; i++)
@@ -56,6 +56,18 @@ static bool is_feasible (const LinearProgram* lp, double x, double y) {
 
     if (x < -EPSILON || y < -EPSILON)
         return false;
+
+    return true;
+}
+
+static bool calculate_intersection (const Line *d1, const Line *d2, Point *out) {
+    double det = d1->a * d2->b - d2->a * d1->b; // déterminant d'ordre 2
+
+    if (fabs(det) < EPSILON)
+        return false; // Droites confondues
+
+    out->x = (d1->d * d2->b - d2->d * d1->b) / det;
+    out->y = (d1->a  * d2->d - d2->a * d1->d) / det;
 
     return true;
 }
