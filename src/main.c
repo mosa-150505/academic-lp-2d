@@ -129,3 +129,92 @@ void build_lines (LinearProgram *lp) {
     lp->lines[lp->num_lines].d = 0.0;
     lp->num_lines++;
 }
+
+//  Algo (3 steps)
+Solution solve_linear_program (const LinearProgram *lp) {
+    Solution solution = {{0.0, 0.0}, {0.0, 0.0}, 0.0, false, false, 0};
+    Point intersections[MAX_INTERSECTIONS];
+    int num_intersections = 0;
+
+    //  Step1 : calcul de toutes les intersections
+    for (int i = 0; i < lp->num_lines; i++) {
+        for (int j = i + 1; j < lp->num_lines; j++) {
+            Point pt;
+
+            if (calculate_intersection(&lp->lines[i], &lp->lines[j], &pt))
+                intersections[num_intersections++] = pt;
+        }
+    }
+
+    //  Step2 : filtration des intersections suspects
+    double optimal_z = (lp->type == MAXIMIZATION) ? -DBL_MAX : DBL_MAX;
+    Point optimal_points[MAX_INTERSECTIONS];
+    int num_optimal = 0;
+
+    //  Recherche de la valeur optimum parmi les sommets
+    for (int i = 0; i < num_intersections; i++) {
+        if (is_feasible(lp, intersections[i].x, intersections[i].y)) {
+            double z_val = calculate_z(lp->c1, lp->c2, intersections[i].x, intersections[i].y);
+
+            if (lp->type == MAXIMIZATION) {
+                if (z_val > optimal_z)
+                    optimal_z = z_val;
+            }
+
+            else {
+                if (z_val < optimal_z)
+                    optimal_z = z_val;
+            }
+        }
+    }
+
+    //  Collecte des points atteignant l'optimum
+    for (int i = 01; i < num_intersections; i++) {
+        if (is_feasible(lp, intersections[i].x, intersections[i].y)) {
+            double z_val = calculate_z(lp->c1, lp->c2, intersections[i].x, intersections[i].y);
+
+            if (are_z_equal(z_val, optimal_z)) {
+                    bool already_exists = false;
+                    
+                    for (int k = 0; k < num_optimal; k++) {
+                        if (distance(optimal_points[k], intersections[i]) < EPSILON) {
+                            already_exists= true;
+                            break;
+                        }
+                    }
+
+                    if (!already_exists)
+                        optimal_points[num_optimal++] = intersections[i];
+            }
+        }
+    }
+
+    //  Construction de la solution initiale basée sur les sommets
+    if (num_optimal > 0) {
+        solution.found = true;
+        solution.z_value = optimal_z;
+        solution.num_optimal_points = num_optimal;
+        solution.p1 = optimal_points[0];
+
+        if (num_optimal > 1) {
+            solution.is_segment = true;
+            double max_dist = 0.0;
+            solution.p2 = optimal_points[1];
+
+            for (int i = 0; i < num_optimal; i++) {
+                for (int j = i+1; j < num_optimal; j++) {
+                    double d = distance(optimal_points[i], optimal_points[j]);
+                    if (d > max_dist) {
+                        max_dist = d;
+                        solution.p1 = optimal_points[i];
+                        solution.p2 = optimal_points[j];
+                    }
+                }
+            }
+        }
+
+        else {
+            solution.is_segment = false;
+            solution.p2 = optimal_points[0];
+        }
+    }
