@@ -4,7 +4,7 @@ CC = gcc
 SRC_DIR = src
 BUILD_DIR = build
 
-SRC = $(SRC_DIR)/lp_solver.c
+SRC = $(SRC_DIR)/main.c
 OBJ = $(BUILD_DIR)/lp_solver.o
 TARGET = $(BUILD_DIR)/lp_solver
 
