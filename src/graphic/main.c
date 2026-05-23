@@ -5,6 +5,7 @@
 #include <float.h>
 
 #define EPSILON 1e-9
+#define C_MAX 30
 
 typedef struct {
     double a, b, d;
@@ -26,3 +27,47 @@ bool est_valide (int nb_contrainte, Droite droites[], Point p) {
     }
     return true;
 }
+
+int saisir_type () {
+    int type;
+
+    do {
+        printf("\n1. Maximisation\n2. Minimisation\n");
+
+        printf("\nVotre choix : ");
+        scanf("%d", &type);
+    } while (type != 1 && type != 2);
+
+    return type;
+}
+
+void saisir_fonction_objectif (double *c1, double *c2) {
+    printf("\nEntrer les coeff de z : ");
+    scanf("%lf %lf", c1, c2);
+}
+
+int saisir_contrainte (Droite droites[]) {
+    int nb_contrainte;
+
+    printf("\nEntrer les contraintes sous forme 'a b d' (0 0 0 pour terminer) :\n");
+
+    nb_contrainte = 0;
+
+    while (nb_contrainte < C_MAX) {
+        printf("-- Contrainte %d : ", nb_contrainte + 1);
+        scanf("%lf %lf %lf", droites[nb_contrainte].a, droites[nb_contrainte].b, droites[nb_contrainte].d);
+
+        if (droites[nb_contrainte].a == 0 && droites[nb_contrainte].b == 0 && droites[nb_contrainte].d == 0)
+            break;
+
+        nb_contrainte ++;
+    }
+
+    droites[nb_contrainte ++] == (Droite){
+
+int saisir_donnees (double *signe_opt, double *c1, double *c2, Droite droites[]) {
+    int nb_contrainte;
+
+   *signe_opt = (saisir_type() == 1) ? 1.0 : -1.0;
+
+   saisir_fonction_objectif(c1, c2);
