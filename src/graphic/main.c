@@ -46,7 +46,7 @@ void saisir_fonction_objectif (double *c1, double *c2) {
     scanf("%lf %lf", c1, c2);
 }
 
-int saisir_contrainte (Droite droites[]) {
+int saisir_contraintes (Droite droites[]) {
     int nb_contrainte;
 
     printf("\nEntrer les contraintes sous forme 'a b d' (0 0 0 pour terminer) :\n");
@@ -75,3 +75,8 @@ int saisir_donnees (double *signe_opt, double *c1, double *c2, Droite droites[])
    *signe_opt = (saisir_type() == 1) ? 1.0 : -1.0;
 
    saisir_fonction_objectif(c1, c2);
+
+   nb_contrainte = saisir_contraintes(droites);
+
+   return nb_contrainte;
+}
