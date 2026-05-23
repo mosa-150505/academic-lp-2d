@@ -55,7 +55,7 @@ int saisir_contrainte (Droite droites[]) {
 
     while (nb_contrainte < C_MAX) {
         printf("-- Contrainte %d : ", nb_contrainte + 1);
-        scanf("%lf %lf %lf", droites[nb_contrainte].a, droites[nb_contrainte].b, droites[nb_contrainte].d);
+        scanf("%lf %lf %lf", &droites[nb_contrainte].a, &droites[nb_contrainte].b, &droites[nb_contrainte].d);
 
         if (droites[nb_contrainte].a == 0 && droites[nb_contrainte].b == 0 && droites[nb_contrainte].d == 0)
             break;
@@ -63,7 +63,11 @@ int saisir_contrainte (Droite droites[]) {
         nb_contrainte ++;
     }
 
-    droites[nb_contrainte ++] == (Droite){
+    droites[nb_contrainte ++] = (Droite){1.0, 0.0, 0.0};
+    droites[nb_contrainte ++] = (Droite){0.0, 1.0, 0.0};
+
+    return nb_contrainte;
+}
 
 int saisir_donnees (double *signe_opt, double *c1, double *c2, Droite droites[]) {
     int nb_contrainte;
