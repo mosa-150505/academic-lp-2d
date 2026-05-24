@@ -31,7 +31,7 @@ int saisir_type () {
 }
 
 void saisir_fonction_objectif (double *c1, double *c2) {
-    printf("\nEntrer les coeff de z : ");
+    printf("\nEntrer les coeff de z sous forme 'c1 c2' : ");
     scanf("%lf %lf", c1, c2);
 }
 
@@ -70,6 +70,7 @@ int saisir_donnees (double *signe_opt, double *c1, double *c2, Droite droites[])
    return nb_contrainte;
 }
 
+//  Verify if (x, y) ∈ R
 bool est_valide (int nb_contrainte, Droite droites[], Point p) {
     int i;
 
@@ -83,6 +84,7 @@ bool est_valide (int nb_contrainte, Droite droites[], Point p) {
     return true;
 }
 
+//  lp algo
 int trouver_sommet_opt (int nb_droite, Droite droites[], double c1, double c2, double signe, double *z_opt, Point sommets_opt[]) {
     int nb_sommet_opt, i, j, k;
     double det;
@@ -136,6 +138,7 @@ int trouver_sommet_opt (int nb_droite, Droite droites[], double c1, double c2, d
     return nb_sommet_opt;
 }
 
+//  Checking unborderness
 bool est_infini (int nb_contrainte, Droite droites[], double c1, double c2, double signe, double z_opt, Point sommet_opt) {
     int i;
     double intervalle, new_z;
@@ -166,6 +169,7 @@ bool est_infini (int nb_contrainte, Droite droites[], double c1, double c2, doub
     return false;
 }
 
+//  Final results
 void afficher_resultats (int nb_sommet_opt, Point sommets_opt[], double z_opt, double signe) {
     printf("\n-- RESULTAT --\n");
 
@@ -206,6 +210,8 @@ int main () {
 
     else 
         afficher_resultats(nb_sommet_opt, sommets_opt, z_opt, signe);
+
+    printf("\n\n");
 
     return 0;
 }
